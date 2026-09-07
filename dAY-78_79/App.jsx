@@ -1,38 +1,37 @@
-import React, { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
-import User from './components/User'
 
 const App = () => {
 
-  const [allData, setAllData] = useState([])
+  const [username, setUsername] = useState('')
 
-  const getData = async () => {
-    const response = await axios.get(
-      'https://jsonplaceholder.typicode.com/posts'
-    )
-
-    console.log(response.data)
-
-    setAllData(response.data)
-  }
+  const [Num, setNum] = useState(0)
 
   useEffect(function () {
+
+    const getData = async () => {
+      const response = await axios.get('https://randomuser.me/api/')
+
+      setUsername(
+        response.data.results[0].name.first +
+        " " +
+        response.data.results[0].name.last
+      )
+    }
+
     getData()
-  }, [])
+
+  }, [Num])  //Dependencies
 
   return (
     <div>
-
-      <div className="card-container">
-
-        {
-          allData.map(function (elem, idx) {
-            return <User key={idx} elem={elem} />
-          })
-        }
-
+      <div>
+        {username}
+        <h1>{Num}</h1>
+        <button onClick={() =>{
+          setNum(Num + 1)
+        }}>Click Here</button>
       </div>
-
     </div>
   )
 }
